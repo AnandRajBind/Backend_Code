@@ -1,0 +1,20 @@
+{
+  "name": "day1",
+  "version": "1.0.0",
+   "description": "Backend Day 1 project",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo \"Building the project...\"",
+    "dev": "nodemon index.js",
+    "start": "nodemon index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
+
+
