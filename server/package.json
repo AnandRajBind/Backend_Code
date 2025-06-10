@@ -1,0 +1,14 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "text-to-speech": "^1.0.11"
+  },
+  "scripts": {
+    "start": "node script.js",
+    "dev": "nodemon index.js",
+    "chacha": "echo \" this is good",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
