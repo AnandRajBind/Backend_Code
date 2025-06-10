@@ -25,8 +25,20 @@ app.get('/', (req, res) => {
 app.get('/about', (req, res) => {
     res.send('About Page');
 });
-app.get('/', (req, res) => {
-    res.send('About Page');
+
+// Simulating a route that might throw an error
+app.get('/portfolio', (req, res, next) => {
+    // res.send('portfolio  Page');
+    return next(new Error('Portfolio page not found')); // Simulating an error
 });
-app.listen(8000);
+
+// error handling 
+app.use((err, req,res, next)=>{
+    console.error('Error occurred:', err.message);
+    res.status(500).send('Internal Server Error');
+});
+// Start the server
+app.listen(3000);
+
+
 
