@@ -39,5 +39,14 @@ app.use(express.static(path.join(__dirname, 'public')));//current directory ka p
 app.get("/",function(req,res){
     res.render("index.ejs")
 })
+app.get("/author/:username",function(req,res){
+    res.send(`author name is ${req.params.username}`);//params ka use karte hai dynamic routing ke liye.
+})
+
+app.get("/author/:username/:age",function(req,res){
+    res.send(`author name is ${req.params.username} "and age is" ${req.params.age}`);//params ka use karte hai dynamic routing ke liye.
+})
+ 
  
 app.listen(3000);
+
