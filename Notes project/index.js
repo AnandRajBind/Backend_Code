@@ -25,8 +25,18 @@ app.get('/file/:filename', (req, res) => {
         res.render('show',{filename:req.params.filename, fileData:fileData});
     })
 }
-)
+);
+// edit page per jane ke liye ham get request use karenge. isme ham file ka naam pass karenge jo edit karna hai.
 
+app.get('/edit/:filename', (req, res) => {
+res.render('edit', {filename: req.params.filename});
+});
+// edit page per file ka data show karne ke liye ham file ko read karenge and uska data ko edit page per show karenge.
+app.post('/edit', (req, res) => {
+fs.rename(`./files/${req.body.previous}`, `./files/${req.body.new}`, function (err) {
+res.redirect('/');// redirect to the home page after editing a file.
+})
+});
 
 // flow. read data from frontend using writefile()->send files to backend using ejs->render the index.ejs file and pass the files to it->display the files on the frontend using ejs.  
 app.post('/create', (req, res) => {
