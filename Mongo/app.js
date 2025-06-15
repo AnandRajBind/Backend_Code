@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
 // isliye agr ham chate hai ki pahale asynchronous code chale to iske liye  async await ka use karna padta hai. 
 //await ka use karne ke liye function(nearest parent function) ko async banana padta hai.
 app.get('/create', async (req, res) => {
-    //asynchronous code
+    //asynchronous codez
     const createdUser = await userModel.create({
         name: 'Anurag',
         username: 'anuragraj',
@@ -23,7 +23,7 @@ app.get('/create', async (req, res) => {
 
 
 app.get('/update', async (req, res) => {
-    // findOneUpdate is used to find a document and update it if it exists, or create a new one if it doesn't.
+    // findOneAndUpdate is used to find a document and update it if it exists, or create a new one if it doesn't.
     // it is used to three parameter findOneUpdate(findone, update, {new: true}). third parameter is used to return the updated document.
     const updatedUser = await userModel.findOneAndUpdate({
         username: 'anandraj',
@@ -34,6 +34,7 @@ app.get('/update', async (req, res) => {
     //synchronous code
     res.send(updatedUser);
 });
+
 app.get(`/read`, async (req, res) => {
     //Note: 
     const users = await userModel.find();// this will return all the documents in the collection.it is returning an array of documents.koi bhi data n milne per find() method empty array  [] return karega. while findOne() method null return karega.

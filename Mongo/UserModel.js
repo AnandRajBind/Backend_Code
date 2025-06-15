@@ -7,5 +7,5 @@ name: String,
 username: String,
 email: String,
 });
-// 
+// yaha per User ka naam hai jo ki collection ka naam banega
 module.exports=mongoose.model('User', userSchema);
