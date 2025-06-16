@@ -20,18 +20,26 @@ app.get('/', (req,res)=>{
 });
 
 
-app.get('/read', (req, res) => {
-    res.render('read.ejs')
+app.get('/read', async (req, res) => {
+const readUsers= await userModel.find();
+
+    res.render("read.ejs", {users: readUsers}); // Pass the users to the EJS template
 })
+app.get('/delete/:id', async (req, res) => {
+const users= await userModel.findByIdAndDelete({_id: req.params.id});
+
+    res.redirect("/read"); // Pass the users to the EJS template
+})
+
 app.post('/create', async (req, res) => {
  
-    let({name,email,image})=req.body; // 
+    let{name,email,image}=req.body; // 
 const createdUser=await userModel.create({
 name,
 email,
 image,
 });
-res.send(createdUser)
+res.redirect("/read")
 });
 
 
