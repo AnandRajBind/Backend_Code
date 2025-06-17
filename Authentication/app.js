@@ -54,13 +54,13 @@ app.get('/bcrypt',function (req,res){
 */
 
 //  ***************************************************JWT*******************************************
-// JWT - JSON Web Token is teen chijo se milker bana hota hai. first alogorithm(header), second data(payload), third signature()
+// JWT - JSON Web Token is teen chijo se milker bana hota hai. first alogorithm(header), second data(payload), third signature(  secret key).
 // token ko client ko bhej dena hai, client is token ko local storage me save kar lega, aur har request me is token ko bhej dega.
 app.get('/jwt',function (req,res){
 let token=jwt.sign({email: "anandrajbind@gmail.com"}, "secretkey");
 res.cookie("token", token); // send the token to the client
 res.send('JWT token generated and sent as cookie');
-console.log(token); // token is generated, it is a string
+//console.log(token); // token is generated, it is a string
 })
 //   read jwt token from cookies
 app.get('/readjwt',function (req,res){
