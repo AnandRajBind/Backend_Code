@@ -30,7 +30,7 @@ app.get('/read', (req, res) => {
     console.log(req.cookies);
     res.send('read page ');
 })
- */
+
 // ***************************************************Encryption*******************************************
 // salt = random string, default number of rounds is 10, it can be changed
 /*app.get('/', (req, res) => {
