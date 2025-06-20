@@ -10,12 +10,9 @@ const postModel = require('./models/post');
 app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser());
-
-
 
 app.get('/', (req, res) => {
     res.render('index');
@@ -52,7 +49,6 @@ app.post('/update/:id', isLoggedIn, async (req, res) => {
     // await post.save();
      res.redirect('/profile')
 })
-
 app.post('/post', isLoggedIn, async (req, res) => {
     let user = await userModel.findOne({ email: req.user.email });
     let { content } = req.body
@@ -80,7 +76,7 @@ app.post('/register', async (req, res) => {
             });
             let token = jwt.sign({ email: email, userid: user._id }, "seceretKey")
             res.cookie('token', token);
-            res.send("User registered successfully");
+            res.redirect("/profile");
         })
     })
 });

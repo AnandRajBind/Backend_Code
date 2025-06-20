@@ -12,8 +12,11 @@
 <body>
 
     <div class="w-full min-h-screen bg-zinc-900 text-white p-10">
-    <h1 class="text-3xl tracking-tighter ml-5 mb-3">Create account</h1>
+        <div class="flex justify-between items-center mb-5">
 
+            <h1 class="text-3xl tracking-tighter ml-5 mb-3">Create account</h1>
+            <a class="bg-blue-500 rounded-md px-5 py-2 text-sm mb-5 inline-block mr-5 " href="/login">login</a>
+        </div>
     <form action="/register" method="post">
         <input class="px-3 py-2 rounded-md outline-none bg-transparent border-2 border-zinc-800 " type="text"
             placeholder="name" name="name">
@@ -29,7 +32,6 @@
             value="Create Account">
     </form>
     </div>
-    
 </body>
 
 </html>
