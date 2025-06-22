@@ -1,16 +1,17 @@
 const express = require("express");
 const app = express();
 const cookieParser = require('cookie-parser')
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const path = require('path');
-const multer=require('multer')
+const upload= require('./config/multerconfig');
+const bcrypt = require('bcrypt');
+// const multer=require('multer')
+// const crypto=require('crypto');
 
 const userModel = require('./models/user');
 const postModel = require('./models/post');
 app.set('view engine', 'ejs');
 
- const crypto=require('crypto');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser());
 
 
+/*
 const storage=multer.diskStorage({
     destination: function(req, file, cb){
         cb(null,'./public/images/upload');
@@ -32,9 +34,7 @@ const storage=multer.diskStorage({
 })
 const upload =multer({storage: storage});
 
-app.get('/', (req, res) => {
-    res.render('index');
-})
+
 app.get('/test', (req, res) => {
     res.render('test');
 })
@@ -43,12 +43,24 @@ app.post('/upload', upload.single('image'), (req, res) => {
 
     res.send("File uploaded successfully");
 })
-
+*/
+app.get('/', (req, res) => {
+    res.render('index');
+})
+app.get('/profile/upload', (req, res) => {
+    res.render('profileupload');
+})
+app.post('/upload', isLoggedIn, upload.single('image'), async (req, res) => {
+// console.log(req.file);
+let user= await userModel.findOne({email:req.user.email})
+user.profilepic=req.file.filename;
+await user.save();
+res.redirect('/profile');
+ })
 
 app.get('/login', (req, res) => {
     res.render('login')
 })
-
 app.get('/profile', isLoggedIn, async (req, res) => {
     let user = await userModel.findOne({ email: req.user.email }).populate('posts');
     console.log(user.posts);
@@ -58,25 +70,25 @@ app.get('/profile', isLoggedIn, async (req, res) => {
 app.get('/like/:id', isLoggedIn, async (req, res) => {
     let post = await postModel.findOne({ _id: req.params.id }).populate('user');
 
-    if(post.likes.indexOf(req.user.userid)=== -1){
+    if (post.likes.indexOf(req.user.userid) === -1) {
         post.likes.push(req.user.userid)
     }
-    else{
+    else {
 
-        post.likes.splice(post.likes.indexOf(req.user.userid),1);
+        post.likes.splice(post.likes.indexOf(req.user.userid), 1);
     }
-     await post.save();
-     res.redirect('/profile' )
+    await post.save();
+    res.redirect('/profile')
 })
 app.get('/edit/:id', isLoggedIn, async (req, res) => {
     let post = await postModel.findOne({ _id: req.params.id }).populate('user');
     // await post.save();
-     res.render('edit', { post})
+    res.render('edit', { post })
 })
 app.post('/update/:id', isLoggedIn, async (req, res) => {
-    let post = await postModel.findOneAndUpdate({ _id: req.params.id },{content:req.body.content});
+    let post = await postModel.findOneAndUpdate({ _id: req.params.id }, { content: req.body.content });
     // await post.save();
-     res.redirect('/profile')
+    res.redirect('/profile')
 })
 app.post('/post', isLoggedIn, async (req, res) => {
     let user = await userModel.findOne({ email: req.user.email });
@@ -121,7 +133,7 @@ app.post('/login', async (req, res) => {
             res.status(200).redirect('/profile');
         }
         else res.redirect("/login")
-     })
+    })
 });
 
 app.get('/logout', (req, res) => {
@@ -139,5 +151,6 @@ function isLoggedIn(req, res, next) {
 }
 
 app.listen(3000);
+
 
 
