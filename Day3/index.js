@@ -12,15 +12,32 @@ app.get('/', (req, res) => {
 app.get('/product ', (req, res) => {
     res.send('About Page');
 });
+app.get('/news', (req, res) => {
+    res.send('news Page');
+});
+// dynamic params
+app.get('/news/:id', (req, res) => {
+    let currentId = req.params.id; // params ki value access karne ke liye.
+    res.send('news Page'+ currentId);
+});
+
 app.post('/login', (req, res) => {
     console.log(req);
-    res.send({
+        // send response (backend to frontend) with status code 200 and JSON data
+
+    res.status(200).json({
         status: 'success',
         msg: 'Login successful',
-
-        bodyData:req.body, // body ka data json se ata hai.
-        queryData:req.query, // query ka data urls se ata hai.mostly used in searching case.
     });
+// send response using res.send() method
+    // res.send({
+    //     status: 'success',
+    //     msg: 'Login successful',
+
+    //     bodyData:req.body, // body ka data json se ata hai.body ka data json me jata hai.
+    //     paramsData:req.params, // params ka data url se ata hai. mostly used in dynamic
+    //     queryData:req.query, // query ka data urls se ata hai.mostly used in searching case.
+    // });
 });
 app.listen(3000);
 
