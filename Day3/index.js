@@ -2,34 +2,80 @@
 // Express.js is a web application framework for Node.js, designed for building web applications and APIs
 const express = require('express');
 const app = express();
+// express.json() is a built-in middleware function in Express.js that parses incoming requests with JSON
 app.use(express.json()); // Middleware to parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded bodies
+
+// Application level middleware (custom middleware) 
+// first middleware 
+let myToken = '12345';
+
+let checkToken = (req, res, next) => {
+    if (req.query.token == "" || req.query.token == undefined) {
+        return res.send({
+            status: '0',
+            msg: 'Token is required',
+        })
+    }
+    if (req.query.token != myToken) {
+        return res.send({
+            status: '0',
+            msg: 'Token is invalid',
+        })
+    }
+    next(); // Call next() to pass control to the next middleware or route handler
+}
+app.use(checkToken); // Using the middleware in the app
+
+// second middleware 
+let myPass = '123';
+
+app.use((req, res, next) => {
+    if (req.query.pass == "" || req.query.pass == undefined) {
+        return res.send({
+            status: '0',
+            msg: 'Password is required',
+        })
+    }
+    if (req.query.pass != myPass) {
+        return res.send({
+            status: '0',
+            msg: 'Password is invalid',
+        })
+    }
+    next();
+})
+
+
 
 // creating Routes  
 app.get('/', (req, res) => {
     res.send('Home Page - Welcome to Express!');
 });
-app.get('/product ', (req, res) => {
-    res.send('About Page');
-});
+
 app.get('/news', (req, res) => {
     res.send('news Page');
 });
+
+app.get('/product ', (req, res) => {
+    res.send('About Page');
+});
+
 // dynamic params
 app.get('/news/:id', (req, res) => {
     let currentId = req.params.id; // params ki value access karne ke liye.
-    res.send('news Page'+ currentId);
+    res.send('news Page' + currentId);
 });
 
 app.post('/login', (req, res) => {
     console.log(req);
-        // send response (backend to frontend) with status code 200 and JSON data
+    // send response (backend to frontend) with status code 200 and JSON data
 
     res.status(200).json({
         status: 'success',
         msg: 'Login successful',
     });
-// send response using res.send() method
+    // send response using res.send() method
     // res.send({
     //     status: 'success',
     //     msg: 'Login successful',
