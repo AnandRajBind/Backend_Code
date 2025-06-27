@@ -2,14 +2,22 @@
 // Express.js is a web application framework for Node.js, designed for building web applications and APIs
 const express = require('express');
 const app = express();
-// express.json() is a built-in middleware function in Express.js that parses incoming requests with JSON
+const env= require('dotenv').config(); // Load environment variables from .env file
+const { checkToken } = require('./checkTokenMiddleware'); // Fixed path
+
+  // express.json() is a built-in middleware function in Express.js that parses incoming requests with JSON
 app.use(express.json()); // Middleware to parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded bodies
 
+
+//console.log(process.env.myToken) // Accessing the environment variable from .env file
+
 // Application level middleware (custom middleware) 
 // first middleware 
-let myToken = '12345';
 
+
+/*
+let myToken = '12345';
 let checkToken = (req, res, next) => {
     if (req.query.token == "" || req.query.token == undefined) {
         return res.send({
@@ -17,6 +25,7 @@ let checkToken = (req, res, next) => {
             msg: 'Token is required',
         })
     }
+
     if (req.query.token != myToken) {
         return res.send({
             status: '0',
@@ -29,7 +38,6 @@ app.use(checkToken); // Using the middleware in the app
 
 // second middleware 
 let myPass = '123';
-
 app.use((req, res, next) => {
     if (req.query.pass == "" || req.query.pass == undefined) {
         return res.send({
@@ -45,19 +53,19 @@ app.use((req, res, next) => {
     }
     next();
 })
-
+*/
 
 
 // creating Routes  
 app.get('/', (req, res) => {
     res.send('Home Page - Welcome to Express!');
 });
-
-app.get('/news', (req, res) => {
+// route level middelware 
+app.get('/news', checkToken ,(req, res) => {
     res.send('news Page');
 });
 
-app.get('/product ', (req, res) => {
+app.get('/product', (req, res) => {
     res.send('About Page');
 });
 
@@ -66,6 +74,7 @@ app.get('/news/:id', (req, res) => {
     let currentId = req.params.id; // params ki value access karne ke liye.
     res.send('news Page' + currentId);
 });
+
 
 app.post('/login', (req, res) => {
     console.log(req);
@@ -85,7 +94,9 @@ app.post('/login', (req, res) => {
     //     queryData:req.query, // query ka data urls se ata hai.mostly used in searching case.
     // });
 });
+
 app.listen(3000);
+
 
 
 
