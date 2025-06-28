@@ -1,5 +1,6 @@
 const express = require('express');
 const { dbConnection } = require('./dbConnection');
+const { ObjectId } = require('mongodb');
 const app = express();
 
 app.use(express.json());
@@ -39,4 +40,39 @@ app.post('/student-insert', async (req, res) => {
     }
     res.send(resObj); // Send the response back to the client
 });
+
+app.delete("/delete/:id", async (req, res) => {
+    let db = await dbConnection();
+    let studentCollection = db.collection("Student_Collection");
+    let { id } = req.params
+    console.log(id);
+    let delRes = await studentCollection.deleteOne({ _id: new ObjectId(id) });
+    let resObj = {
+        status: '0',
+        msg: "Data delete API",
+        delRes
+    }
+    res.send(resObj);
+})
+
+
+app.put("/update/:id", async (req, res) => {
+    let { id } = req.params
+    let { name, email } = req.body; // Destructuring to get name and email from request body
+    let obj = { name, email }; // data to update
+
+
+    let myDB = await dbConnection();
+    let studentCollection = myDB.collection("Student_Collection");
+
+    let updateRes = await studentCollection.updateOne({ _id: new ObjectId(id) }, { $set: { name, email } }); // Update the document with the specified id
+
+    let resObj = {
+        status: '0',
+        msg: "Data update API",
+        updateRes
+    }
+    
+    res.send(updateRes); // Send the response back to the client
+})
 app.listen(3000);
