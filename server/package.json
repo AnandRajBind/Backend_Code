@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "dependencies": {
     "chalk": "^5.4.1",
+    "express": "^5.1.0",
+    "mongoose": "^8.17.0",
     "text-to-speech": "^1.0.11"
   },
   "scripts": {
@@ -10,5 +12,12 @@
     "dev": "nodemon index.js",
     "chacha": "echo \" this is good",
     "test": "echo \"Error: no test specified\" && exit 1"
-  }
+  },
+  "description": "",
+  "main": "script.js",
+  "devDependencies": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
 }
