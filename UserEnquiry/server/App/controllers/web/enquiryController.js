@@ -1,3 +1,5 @@
+const enquiryModel = require('../../models/enquiry.model.js');
+
 let enquiryInsert=(req, res)=>{
 let { name, email, phone, message } = req.body;
     console.log("Received enquiry data:", name, email, phone, message);
@@ -12,5 +14,9 @@ let { name, email, phone, message } = req.body;
     }).catch((err) => {
         res.send({ status: 0, message: "Error while saving enquiry", error: err });
     })}
-
-module.exports={enquiryInsert}
+// read
+    let enquiryList = async (req, res) => {
+        let enquiry = await enquiryModel.find();
+        res.status(200).json({ status: 1, message: "Enquiry List", enquiryList: enquiry })
+    }
+module.exports={enquiryInsert, enquiryList}
