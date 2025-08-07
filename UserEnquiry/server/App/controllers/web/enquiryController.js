@@ -19,4 +19,14 @@ let { name, email, phone, message } = req.body;
         let enquiry = await enquiryModel.find();
         res.status(200).json({ status: 1, message: "Enquiry List", enquiryList: enquiry })
     }
-module.exports={enquiryInsert, enquiryList}
+    //delete
+    let enquiryDelete = async (req, res) => {
+        const userId = req.params.id;
+        let deletedData = await enquiryModel.findByIdAndDelete({ _id: req.params.id });
+        res.send({
+            status: 1,
+            message: "Enquiry deleted successfully",
+            data: deletedData
+        })
+    }
+module.exports={enquiryInsert, enquiryList, enquiryDelete} 

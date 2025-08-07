@@ -37,10 +37,9 @@ export const Enquiry = () => {
         phone: '',
         message: ''
       }); // Reset form data after successful submission
+      getAllEnquiry(); // Refresh the enquiry list
     })
   }
-
-
   let getAllEnquiry = () => {
     axios.get('http://localhost:3000/api/website/enquiry/view')
       .then((res) => {
@@ -97,7 +96,7 @@ export const Enquiry = () => {
             </div>
           </form>
         </div>
-        <EnquiryList  data={enquiryList}/>
+        <EnquiryList  data={enquiryList} getAllEnquiry={getAllEnquiry}/>
       </div>
     </div>
   )
