@@ -2,12 +2,11 @@ import React from 'react'
 import { EnquiryList } from './enquiry/EnquiryList.jsx';
 import axios from 'axios';
 import { useState } from 'react';
-import {ToastContainer,toast} from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import { useEffect } from 'react';
 
 export const Enquiry = () => {
-
-let [enquiryList, setEnquiryList] = useState([]);
-
+  let [enquiryList, setEnquiryList] = useState([]);
   let [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -42,12 +41,15 @@ let [enquiryList, setEnquiryList] = useState([]);
   }
 
 
-  let getAllEnquiry=()=>{
+  let getAllEnquiry = () => {
     axios.get('http://localhost:3000/api/website/enquiry/view')
-  .then((res)=>{
-return res.data
-  })
-
+      .then((res) => {
+        return res.data
+      }).then((finalData) => {
+        if (finalData.status) {
+          setEnquiryList(finalData.enquiryList);
+        }
+      })
   }
 
 
@@ -61,6 +63,9 @@ return res.data
     console.log(inputName)
   }
 
+  useEffect(()=>{
+    getAllEnquiry();
+  },[])
   return (
     <div>
       <ToastContainer />
@@ -92,7 +97,7 @@ return res.data
             </div>
           </form>
         </div>
-        <EnquiryList />
+        <EnquiryList  data={enquiryList}/>
       </div>
     </div>
   )
