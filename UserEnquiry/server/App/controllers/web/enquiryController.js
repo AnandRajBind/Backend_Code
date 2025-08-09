@@ -29,4 +29,26 @@ let { name, email, phone, message } = req.body;
             data: deletedData
         })
     }
-module.exports={enquiryInsert, enquiryList, enquiryDelete} 
+    // find single row 
+    let enquirySingleRow = async (req, res) => {
+    let enId = req.params.id;
+     let enquiry=await  enquiryModel.findOne({_id:enId})
+    res.send({status:1, enquiry})
+}
+//update
+
+let enquiryUpdate=async(req,res)=>{
+    let enquiryId=req.params.id;
+    let {name, email,phone,message}=req.body;
+    let updateObj={
+        name,
+        email, 
+        phone, 
+        message
+    };
+    let updateRes=await enquiryModel.updateOne({_id:enquiryId}, updateObj);
+    res.send({status:1,message:"Enquiry Updated Successfully", updateRes})
+}
+
+
+module.exports={enquiryInsert, enquiryList, enquiryDelete, enquirySingleRow, enquiryUpdate} 

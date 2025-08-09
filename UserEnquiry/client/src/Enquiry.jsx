@@ -3,6 +3,7 @@ import { EnquiryList } from './enquiry/EnquiryList.jsx';
 import axios from 'axios';
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useEffect } from 'react';
 
 export const Enquiry = () => {
@@ -11,35 +12,52 @@ export const Enquiry = () => {
     name: '',
     email: '',
     phone: '',
-    message: ''
+    message: '',
+    _id: ''
   });
 
   let saveEnquiry = (e) => {
-    // alert("Enquiry Saved Successfully");
     e.preventDefault();
 
+    if (formData._id) {
+      // update
+      axios.put(`http://localhost:3000/api/website/enquiry/update/${formData._id}`, formData)
+      .then((res)=>{
+        console.log(res.data)
+        toast.success("Enquiry Updated Successfully");
+        setFormData({
+          name:"",
+          email:"",
+          phone:"",
+          message:"",
+          _id:''
+        })
+        getAllEnquiry();
+      }) .catch((err) => {
+        console.error("Update failed:", err);
+        toast.error("Failed to update enquiry");
+      });
+    } else {
+      axios.post('http://localhost:3000/api/website/enquiry/insert', formData).then((res) => {
 
-    // let formData = {
-    //   name: e.target.name.value,
-    //   email: e.target.email.value,
-    //   phone: e.target.phone.value,
-    //   message: e.target.message.value
-    // }
+        toast.success("Enquiry Saved Successfully")
+        console.log("Enquiry saved successfully:", res.data);
 
-    axios.post('http://localhost:3000/api/website/enquiry/insert', formData).then((res) => {
-
-      toast.success("Enquiry Saved Successfully")
-      console.log("Enquiry saved successfully:", res.data);
-
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        message: ''
-      }); // Reset form data after successful submission
-      getAllEnquiry(); // Refresh the enquiry list
-    })
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          message: ''
+        }); // Reset form data after successful submission
+        getAllEnquiry(); // Refresh the enquiry list
+      }) .catch((err) => {
+        console.error("Insert failed:", err);
+        toast.error("Failed to save enquiry");
+      });
+    }
   }
+
+
   let getAllEnquiry = () => {
     axios.get('http://localhost:3000/api/website/enquiry/view')
       .then((res) => {
@@ -62,9 +80,9 @@ export const Enquiry = () => {
     console.log(inputName)
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getAllEnquiry();
-  },[])
+  }, [])
   return (
     <div>
       <ToastContainer />
@@ -92,12 +110,20 @@ export const Enquiry = () => {
             </div>
 
             <div className="py-3 bg-amber-400 rounded">
-              <button type='submit' className='w-[100%]'>Save</button>
+              <button type='submit' className='w-[100%]'>
+                {formData._id ? "Update" : "Save"}
+
+              </button>
             </div>
           </form>
         </div>
-        <EnquiryList  data={enquiryList} getAllEnquiry={getAllEnquiry}/>
+        <EnquiryList data={enquiryList} getAllEnquiry={getAllEnquiry} setFormData={setFormData} />
       </div>
     </div>
   )
 }
+
+
+
+
+

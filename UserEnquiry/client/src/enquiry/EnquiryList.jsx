@@ -1,11 +1,13 @@
 import React from 'react'
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import 'sweetalert2/src/sweetalert2.scss';
 
 
-export function EnquiryList({ data, getAllEnquiry }) {
+export function EnquiryList({ data, setFormData,  getAllEnquiry  }) {
+
   let deleteRow = (delid) => {
 
     Swal.fire({
@@ -16,7 +18,7 @@ export function EnquiryList({ data, getAllEnquiry }) {
     }).then((result) => {
       if (result.isConfirmed) {
         axios.delete(`http://localhost:3000/api/website/enquiry/delete/${delid}`).then((res) => {
-          toast.success(" Deleted Successfully");
+          toast.success(" Deleted Successfully", res);
           getAllEnquiry();
         })
       } else if (result.isDenied) {
@@ -25,6 +27,14 @@ export function EnquiryList({ data, getAllEnquiry }) {
     })
   }
 
+  let editRow = (edited) => {
+
+    axios.get(`http://localhost:3000/api/website/enquiry/single/${edited}`).then((res) => {
+      let data = res.data
+      setFormData(data.enquiry)
+      console.log("Edit mode form data"+data.enquiry);
+    })
+  }
   return (
     <div className="bg-gray-200 p-4">
       <h2 className='text-[20px] font-bold'>Enquary list</h2>
@@ -61,7 +71,7 @@ export function EnquiryList({ data, getAllEnquiry }) {
                     <td class="px-4 py-2 border">{item.email}</td>
                     <td class="px-4 py-2 border">{item.phone}</td>
                     <td class="px-4 py-2 border">{item.message}</td>
-                    <td className="bg-blue-500 px-4 py-2 border text-white hover:underline cursor-pointer">Edit</td>
+                    <td onClick={() => editRow(item._id)} className="bg-blue-500 px-4 py-2 border text-white hover:underline cursor-pointer">Edit</td>
                     <td onClick={() => deleteRow(item._id)} className="px-4 py-2 border bg-red-500 text-white hover:underline cursor-pointer">Delete</td>
                   </tr>
                 </>
