@@ -9,8 +9,6 @@ if(req.url=="/"){
     res.end("Welcome to Home Page"); // end() method ka use karke response ko end karte hai aur client ko data bhejte hai.
 }
 if(req.url=="/news"){
-
-
     let obj={
         status: "success",
         data: [
@@ -21,7 +19,6 @@ if(req.url=="/news"){
         ]
     }   
     res.end(JSON.stringify(obj)); // JSON.stringify() method ka use karke object ko string me convert karte hai aur client ko bhejte hai.
-
 }
 if(req.url=="/about"){
     res.end("Welcome to About Page");

@@ -1,5 +1,5 @@
-const express = require('express');
-const app = express();
+const express = require('express'); // express calling
+const app = express(); // create app(initlize) using express()
 
 // request and response are the two main objects in express.js.
 // request is used to get the data from the client and response is used to send the data to the client. 
@@ -30,6 +30,10 @@ app.get('/about', (req, res) => {
 app.get('/portfolio', (req, res, next) => {
     // res.send('portfolio  Page');
     return next(new Error('Portfolio page not found')); // Simulating an error
+});
+// post method api can't directly call the browser
+app.post('/login', (req, res, next) => {
+     res.send({"status": 1, "message": "login Successful"})
 });
 
 // error handling 
