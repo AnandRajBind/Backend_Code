@@ -1,4 +1,4 @@
-const {addToCart, changeQty,name} = require("./cardModules");
+const {addToCart, changeQty,name} = require("./cardModules"); // 
 
 console.log("Hello, World!");
 console.log("jhgjhgjh`");
