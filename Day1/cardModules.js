@@ -9,7 +9,7 @@ let name='Anand'
 
 
 // ****************************************default export *************************************************************
-//  1 file me only one default export is present.
+//  1 file me only one default export is present at a time.
 // module.exports=addToCart;  // default export that means this module can be imported with same name.
 
 

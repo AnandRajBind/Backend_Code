@@ -13,12 +13,12 @@ app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-enco
 //console.log(process.env.myToken) // Accessing the environment variable from .env file
 
 // Application level middleware (custom middleware) 
-// first middleware 
 
+// ***************************first middleware************************* 
 
 /*
 let myToken = '12345';
-let checkToken = (req, res, next) => {
+let checkTokens = (req, res, next) => {
     if (req.query.token == "" || req.query.token == undefined) {
         return res.send({
             status: '0',
@@ -34,9 +34,12 @@ let checkToken = (req, res, next) => {
     }
     next(); // Call next() to pass control to the next middleware or route handler
 }
-app.use(checkToken); // Using the middleware in the app
+app.use(checkTokens); // Using the middleware in the app
 
-// second middleware 
+*/
+//**********************  second middleware *********************************
+
+/*
 let myPass = '123';
 app.use((req, res, next) => {
     if (req.query.pass == "" || req.query.pass == undefined) {
@@ -54,8 +57,6 @@ app.use((req, res, next) => {
     next();
 })
 */
-
-
 // creating Routes  
 app.get('/', (req, res) => {
     res.send('Home Page - Welcome to Express!');
@@ -74,7 +75,6 @@ app.get('/news/:id', (req, res) => {
     let currentId = req.params.id; // params ki value access karne ke liye.
     res.send('news Page' + currentId);
 });
-
 
 app.post('/login', (req, res) => {
     console.log(req);
@@ -95,7 +95,7 @@ app.post('/login', (req, res) => {
     // });
 });
 
-app.listen(3000);
+app.listen(process.env.PORT || '5000');
 
 
 
