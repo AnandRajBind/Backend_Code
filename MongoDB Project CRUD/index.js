@@ -16,7 +16,7 @@ app.get('/student-read', async (req, res) => {
         status: '1',
         msg: 'Student Read API',
         data
-    }
+    } 
     res.send(data);
 });
 app.post('/student-insert', async (req, res) => {
@@ -44,13 +44,13 @@ app.post('/student-insert', async (req, res) => {
 
     console.log(obj);
     let resObj = {
-        status: '0',
+        status: '1',
         msg: "Data Insert API",
         insertRes
     }
     res.send(resObj); // Send the response back to the client
 });
-
+  
 app.delete("/delete/:id", async (req, res) => {
     let db = await dbConnection();
     let studentCollection = db.collection("Student_Collection");
@@ -58,20 +58,16 @@ app.delete("/delete/:id", async (req, res) => {
     console.log(id);
     let delRes = await studentCollection.deleteOne({ _id: new ObjectId(id) });
     let resObj = {
-        status: '0',
+        status: '1',
         msg: "Data delete API",
         delRes
     }
     res.send(resObj);
 })
 
-
-
 app.put("/update/:id", async (req, res) => {
     let { id } = req.params
     let { name, email } = req.body; // Destructuring to get name and email from request body
-
-
     let obj = {}; // data to update
 // empty object validation
     if (name !== "" && name !== undefined && name !== null) {
@@ -80,16 +76,14 @@ app.put("/update/:id", async (req, res) => {
     if (email !== "" && email !== undefined && email !== null) {
         obj['email'] = email
     }
-
     console.log(obj);
-
     let myDB = await dbConnection();
     let studentCollection = myDB.collection("Student_Collection");
 
     let updateRes = await studentCollection.updateOne({ _id: new ObjectId(id) }, { $set: obj }); // Update the document with the specified id
 
     let resObj = {
-        status: '0',
+        status: '1',
         msg: "Data update API",
         updateRes
     }
